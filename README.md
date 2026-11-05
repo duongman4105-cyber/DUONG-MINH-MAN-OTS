@@ -1,4 +1,4 @@
-# G3.10 — Hệ thống truy vết phương tiện qua nhiều camera
+# G3.10 — Hệ thống truy vết phương tiện qua nhiều camera 
 
 > Hệ thống hỗ trợ phát hiện, tìm kiếm và liên kết các lần xuất hiện của phương tiện trong mạng lưới camera bằng trí tuệ nhân tạo.
 
@@ -8,7 +8,7 @@ Trong môi trường có nhiều camera, thông tin về một phương tiện t
 
 Hệ thống hướng đến việc tổng hợp các dấu hiệu nhận dạng và thông tin thời gian để hỗ trợ tìm kiếm, đối chiếu và liên kết các sự kiện phương tiện trên toàn mạng lưới camera.
 
-## Vai trò của AI
+## Vai trò của Trí tuệ nhân tạo
 
 AI được tích hợp vào quy trình phân tích hình ảnh và hỗ trợ đối chiếu sự kiện. Tùy theo dữ liệu và mô hình được lựa chọn, hệ thống có thể:
 
