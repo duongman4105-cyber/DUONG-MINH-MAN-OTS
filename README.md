@@ -1,14 +1,10 @@
-# G3.10 - Hệ thống truy vết phương tiện qua nhiều camera
+# G3.10 — Hệ thống truy vết phương tiện qua nhiều camera
 
-## Giới thiệu
+> Hệ thống hỗ trợ phát hiện, tìm kiếm và liên kết các lần xuất hiện của phương tiện trong mạng lưới camera bằng trí tuệ nhân tạo.
 
-Đề tài xây dựng hệ thống ứng dụng trí tuệ nhân tạo (AI) để hỗ trợ truy vết phương tiện xuất hiện tại nhiều camera trong một khu vực. AI phân tích hình ảnh từ camera để nhận diện phương tiện, hỗ trợ đọc biển số và xác định các đặc trưng như màu sắc, loại xe. Từ những thông tin này kết hợp với camera và thời gian ghi nhận, hệ thống tìm và liên kết những lần xuất hiện có khả năng thuộc cùng một phương tiện.
+## Tổng quan
 
-Kết quả truy vết được lưu thành các sự kiện có thông tin camera và thời điểm ghi nhận, giúp người dùng tra cứu hành trình phương tiện nhanh chóng và có hệ thống.
-
-## Bài toán
-
-Trong môi trường có nhiều camera, dữ liệu phương tiện thường được ghi nhận rời rạc theo từng vị trí và thời điểm. Việc tìm lại một phương tiện cụ thể bằng cách xem thủ công từng nguồn hình ảnh tốn thời gian, đặc biệt khi biển số không đọc được rõ ràng hoặc phương tiện xuất hiện ở nhiều camera khác nhau.
+Trong môi trường có nhiều camera, thông tin về một phương tiện thường được ghi nhận rời rạc theo từng vị trí và thời điểm. Việc tra cứu thủ công mất nhiều thời gian, đặc biệt khi hình ảnh không rõ hoặc biển số không thể nhận diện đầy đủ.
 
 Hệ thống hướng đến việc tổng hợp các dấu hiệu nhận dạng và thông tin thời gian để hỗ trợ tìm kiếm, đối chiếu và liên kết các sự kiện phương tiện trên toàn mạng lưới camera.
 
@@ -26,44 +22,89 @@ Kết quả AI có thể chưa chính xác trong mọi điều kiện, chẳng h
 
 ## Mục tiêu
 
-- Ghi nhận sự kiện phương tiện từ các camera, gồm biển số, màu sắc, loại xe, camera và thời gian.
-- Đối chiếu các sự kiện để xác định những lần xuất hiện có khả năng thuộc cùng một phương tiện.
-- Lưu trữ dữ liệu sự kiện phục vụ tra cứu và truy vết.
-- Cung cấp giao diện tìm kiếm theo thông tin nhận dạng và khoảng thời gian.
-- Hiển thị các lần xuất hiện đã tìm được theo thứ tự thời gian và camera.
+- Phát hiện phương tiện từ hình ảnh hoặc video camera.
+- Trích xuất biển số, loại xe, màu sắc và các đặc trưng liên quan.
+- Ghi nhận sự kiện cùng camera, vị trí và thời điểm xuất hiện.
+- Tìm kiếm theo biển số, thuộc tính phương tiện và khoảng thời gian.
+- Liên kết các sự kiện có khả năng thuộc cùng một phương tiện.
+- Hiển thị các lần xuất hiện theo trình tự thời gian để hỗ trợ tra cứu.
 
-## Quy trình tổng quát
+## Quy trình xử lý
 
-1. Camera ghi nhận hình ảnh hoặc video có phương tiện.
-2. AI phân tích dữ liệu để phát hiện phương tiện và trích xuất các thông tin nhận dạng có thể sử dụng.
-3. Hệ thống kết hợp kết quả phân tích với camera và thời gian, sau đó lưu thành sự kiện trong cơ sở dữ liệu.
-4. Khi có truy vấn, hệ thống đối chiếu các sự kiện theo biển số, đặc trưng phương tiện và thời gian.
-5. Giao diện trả về các lần xuất hiện phù hợp để người dùng xem và kiểm tra hành trình.
+```text
+Camera
+  ↓
+Phát hiện phương tiện
+  ↓
+Nhận diện biển số và đặc trưng
+  ↓
+Lưu sự kiện (phương tiện, camera, thời gian)
+  ↓
+Đối chiếu và liên kết sự kiện
+  ↓
+Tìm kiếm, xem kết quả và truy vết
+```
 
-## Chức năng dự kiến
+## Chức năng chính
 
-- Phân tích hình ảnh camera bằng AI để phát hiện và nhận diện các thuộc tính phương tiện.
-- Tiếp nhận và quản lý sự kiện phương tiện từ nhiều camera.
-- Tìm kiếm theo biển số hoặc các thuộc tính như màu sắc, loại xe và thời gian.
-- Liên kết các sự kiện có khả năng thuộc cùng phương tiện.
-- Xem thông tin từng lần xuất hiện và chuỗi sự kiện theo thời gian.
-- Lưu trữ dữ liệu để hỗ trợ truy vấn và rà soát lại.
+### Phân tích dữ liệu bằng AI
 
-## Sản phẩm dự kiến
+- Phát hiện phương tiện trong ảnh hoặc video.
+- Nhận diện và trích xuất biển số khi chất lượng hình ảnh cho phép.
+- Phân loại phương tiện và ước lượng màu sắc.
+- Tạo các đặc trưng phục vụ việc so khớp giữa nhiều camera.
 
-- **Mô hình AI và truy vết:** phân tích hình ảnh, trích xuất đặc trưng và hỗ trợ liên kết các lần xuất hiện dựa trên thông tin nhận dạng và thời gian.
-- **Cơ sở dữ liệu sự kiện:** lưu thông tin phương tiện, camera và thời điểm ghi nhận.
-- **Giao diện tìm kiếm:** cho phép nhập tiêu chí, xem kết quả và theo dõi các sự kiện liên quan.
+### Quản lý và truy vấn sự kiện
 
-## Phạm vi và lưu ý
+- Tiếp nhận sự kiện từ nhiều camera.
+- Lưu thông tin phương tiện, camera và thời điểm ghi nhận.
+- Tìm kiếm theo biển số, màu sắc, loại xe và khoảng thời gian.
+- Sắp xếp, liên kết và hiển thị chuỗi sự kiện theo thời gian.
 
-Kết quả liên kết là cơ sở hỗ trợ tra cứu, không mặc nhiên khẳng định các sự kiện chắc chắn thuộc cùng một phương tiện. Độ chính xác phụ thuộc vào chất lượng hình ảnh, độ rõ của biển số, tính đầy đủ của dữ liệu và cách cấu hình đối chiếu. Việc triển khai thực tế cần tuân thủ các quy định hiện hành về quyền riêng tư và quản lý dữ liệu.
+## Kiến trúc dự kiến
+
+Hệ thống được tổ chức theo các nhóm thành phần sau:
+
+1. **Nguồn dữ liệu:** hình ảnh hoặc video từ các camera.
+2. **Tầng AI:** phát hiện phương tiện, nhận diện biển số và trích xuất đặc trưng.
+3. **Tầng xử lý nghiệp vụ:** chuẩn hóa, đối chiếu và liên kết các sự kiện.
+4. **Cơ sở dữ liệu:** lưu sự kiện, thông tin camera và kết quả phân tích.
+5. **Giao diện tra cứu:** tìm kiếm, xem chi tiết và theo dõi hành trình.
+
+> Công nghệ và cấu trúc thư mục sẽ được cập nhật khi các thành phần của sản phẩm được triển khai.
+
+## Trạng thái dự án
+
+Dự án đang trong giai đoạn xây dựng và hoàn thiện. Các tính năng, hướng dẫn cài đặt và tài liệu kỹ thuật sẽ được bổ sung cùng với tiến độ phát triển.
+
+## Hướng dẫn phát triển
+
+Hiện tại repository mới tập trung vào việc mô tả phạm vi và yêu cầu của sản phẩm. Khi mã nguồn ứng dụng được bổ sung, phần này sẽ bao gồm:
+
+- Yêu cầu môi trường và phiên bản runtime.
+- Cách cài đặt dependencies.
+- Cách cấu hình biến môi trường và cơ sở dữ liệu.
+- Lệnh chạy ứng dụng ở môi trường phát triển.
+- Lệnh kiểm thử và đóng gói sản phẩm.
+
+## Phạm vi và giới hạn
+
+Kết quả nhận diện và liên kết chỉ có tính chất hỗ trợ tra cứu. Độ chính xác phụ thuộc vào chất lượng hình ảnh, điều kiện ánh sáng, góc quay, độ rõ của biển số, dữ liệu đầu vào và cấu hình mô hình.
+
+Việc triển khai thực tế cần:
+
+- Có quy trình kiểm tra và xác minh kết quả bởi người có thẩm quyền.
+- Bảo vệ dữ liệu hình ảnh, biển số và thông tin liên quan.
+- Tuân thủ các quy định hiện hành về quyền riêng tư và quản lý dữ liệu.
+- Kiểm soát quyền truy cập, thời hạn lưu trữ và việc sử dụng dữ liệu.
 
 ## Thông tin dự án
 
-- **Mã đề tài:** G3.10
-- **Tên đề tài:** Xây dựng hệ thống truy vết phương tiện qua nhiều camera
-- **Sản phẩm:** Mô hình truy vết, cơ sở dữ liệu sự kiện và giao diện tìm kiếm
+| Hạng mục | Nội dung |
+| --- | --- |
+| Mã đề tài | G3.10 |
+| Tên đề tài | Xây dựng hệ thống truy vết phương tiện qua nhiều camera |
+| Sản phẩm | Mô hình truy vết, cơ sở dữ liệu sự kiện và giao diện tìm kiếm |
 
 ## Thành viên nhóm
 
