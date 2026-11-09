@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Environment and local configuration
+.env
+.env.*
+!.env.example
+
+# Local database and tooling files
+*.db
+*.sqlite
+*.sqlite3
+.pytest_cache/
+.mypy_cache/
