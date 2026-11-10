@@ -4,8 +4,7 @@ from sqlalchemy.orm import Session
 import models
 from database import engine, get_db
 
-# Không cần tạo bảng lại vì bạn đã tạo bằng lệnh SQL trên Workbench
-# Nhưng lệnh này đảm bảo an toàn nếu sau này thiếu bảng nào đó
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="MTMCT Backend API", version="1.0.0")
