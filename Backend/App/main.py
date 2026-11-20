@@ -9,7 +9,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="MTMCT Backend API", version="1.0.0")
 
-# API CŨ (Giữ nguyên logic của bạn)
+# API CŨ (Giữ nguyên logic)
 @app.post("/api/v1/events")
 def create_event(event: schemas.EventData, db: Session = Depends(get_db)):
     # 1. Kiểm tra xe đã tồn tại chưa
@@ -38,7 +38,7 @@ def create_event(event: schemas.EventData, db: Session = Depends(get_db)):
 @app.post("/api/v1/features")
 def receive_feature(data: schemas.FeatureData, db: Session = Depends(get_db)):
     try:
-        # Bước 1: Vẫn phải kiểm tra và thêm xe mới nếu nó chưa có trong DB
+        # Vẫn phải kiểm tra và thêm xe mới nếu nó chưa có trong DB
         db_vehicle = db.query(models.Vehicle).filter(models.Vehicle.vehicle_id == data.vehicle_id).first()
         if not db_vehicle:
             new_vehicle = models.Vehicle(
@@ -48,7 +48,7 @@ def receive_feature(data: schemas.FeatureData, db: Session = Depends(get_db)):
             db.add(new_vehicle)
             db.commit()
 
-        # Bước 2: Lưu cục vector 2048 chiều vào bảng FeatureVectors
+        # Lưu cục vector 2048 chiều vào bảng FeatureVectors
         new_feature = models.FeatureVector(
             cam_id=data.cam_id,
             vehicle_id=data.vehicle_id,

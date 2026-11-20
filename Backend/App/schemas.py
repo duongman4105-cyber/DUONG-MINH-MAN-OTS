@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, validator
 from typing import Optional, List
 
-# Schema cho API /events cũ của bạn
+# Schema cho API /events cũ
 class EventData(BaseModel):
     cam_id: str
     vehicle_id: str
