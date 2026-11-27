@@ -1,0 +1,10 @@
+.env
+venv/
+.venv/
+__pycache__/
+*.pyc
+App/static/uploads/
+App/static/crops/
+*.mp4
+*.zip
+App/*_test.json

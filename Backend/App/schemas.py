@@ -1,6 +1,41 @@
-from pydantic import BaseModel, Field, field_validator
-from typing import List, Optional
 import math
+from typing import List, Literal, Optional
+from pydantic import BaseModel, Field, field_validator
+
+
+class CameraCreate(BaseModel):
+    cam_id: str = Field(..., min_length=1, max_length=64)
+    cam_name: str = Field(..., min_length=1, max_length=120)
+    location: Optional[str] = "Chưa cập nhật"
+    rtsp_url: Optional[str] = None
+    status: str = "active"
+
+
+class BatchCreate(BaseModel):
+    batch_id: Optional[str] = None
+    name: Optional[str] = None
+    total_jobs: int = Field(default=3, ge=1, le=20)
+
+
+class JobNextRequest(BaseModel):
+    worker_id: str = Field(..., min_length=1, max_length=100, description="Bắt buộc để định danh máy AI")
+
+
+class JobFailRequest(BaseModel):
+    worker_id: str = Field(..., min_length=1, max_length=100)
+    error_message: str = Field(..., min_length=1, max_length=500)
+    error_log: Optional[str] = None
+    retryable: bool = False
+
+
+class WorkerHeartbeatRequest(BaseModel):
+    worker_id: str = Field(..., min_length=1, max_length=100)
+    current_job_id: Optional[str] = None
+    progress: Optional[int] = Field(default=None, ge=0, le=100)
+
+
+class CandidateDecisionRequest(BaseModel):
+    decision: Literal["same", "different"]
 
 
 class EventData(BaseModel):
